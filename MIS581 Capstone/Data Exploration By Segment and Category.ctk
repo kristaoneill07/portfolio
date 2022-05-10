@@ -1,0 +1,783 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Task schemaVersion="5.4">
+    <Registration>
+        <Name>Data Exploration</Name>
+        <Description>The Data Exploration task provides graphs that can be used to explore relationships among selected variables.</Description>
+        <GUID>e5929f47-9122-4e2d-9a87-f490dbd02db2</GUID>
+        <Procedures>SGSCATTER UNIVARIATE FREQ BOXPLOT</Procedures>
+        <Version>3.8</Version>
+        <Links>
+            <Link href="http://documentation.sas.com/?softwareId=STUDIOMID&amp;softwareVersion=3.8&amp;softwareContextId=tasks&amp;requestor=inapp">SAS Studio Task Reference Guide</Link>
+            <Link href=""/>
+            <Link href=""/>
+            <Link href="http://documentation.sas.com/?softwareId=MVADOC&amp;softwareVersion=3.8_9.4&amp;softwareContextId=proc_sgscatter&amp;requestor=inapp">The SGSCATTER Procedure</Link>
+            <Link href=""/>
+            <Link href=""/>
+            <Link href="http://documentation.sas.com/?softwareId=MVADOC&amp;softwareVersion=3.8_9.4&amp;softwareContextId=proc_univariate&amp;requestor=inapp">The UNIVARIATE Procedure</Link>
+            <Link href=""/>
+            <Link href=""/>
+            <Link href="http://documentation.sas.com/?softwareId=MVADOC&amp;softwareVersion=3.8_9.4&amp;softwareContextId=proc_freq&amp;requestor=inapp">The FREQ Procedure</Link>
+            <Link href=""/>
+            <Link href=""/>
+            <Link href="http://documentation.sas.com/?softwareId=ANMVA&amp;softwareVersion=3.8_15.1&amp;softwareContextId=proc_boxplot&amp;requestor=inapp">The BOXPLOT Procedure</Link>
+            <Link href=""/>
+            <Link href=""/>
+            <Link href="http://support.sas.com/training/studio">SAS Tutorials</Link>
+        </Links>
+    </Registration>
+    <Metadata>
+        <DataSources>
+            <DataSource name="dataset">
+                <Roles>
+                    <Role exclude="classVariable,byVariable" maxVars="6"
+                        minVars="0" name="continuousVariable"
+                        order="true" type="N">Continuous variables:</Role>
+                    <Role exclude="continuousVariable,byVariable"
+                        maxVars="2" minVars="0" name="classVariable"
+                        order="true" type="A">Classification variables:</Role>
+                    <Role exclude="continuousVariable,classVariable"
+                        maxVars="0" minVars="0" name="byVariable"
+                        order="true" type="A">Group analysis by:</Role>
+                </Roles>
+            </DataSource>
+        </DataSources>
+        <Options>
+            <Option inputType="string" name="dataTab">DATA</Option>
+            <Option inputType="string" name="dataGroup">DATA</Option>
+            <Option inputType="string" name="rolesGroup">ROLES</Option>
+            <Option inputType="string" name="addRolesGroup">ADDITIONAL ROLES</Option>
+            <Option inputType="string" name="plotsTab">PLOTS</Option>
+            <Option inputType="string" name="plotOptionNoteGroup">NOTE</Option>
+            <Option inputType="string" name="plotOptionNote">Plots are available when you specify at least one continuous variable or two classification variables if no continuous variable is selected.</Option>
+            <Option inputType="string" name="scatterplotMatrixGroup">SCATTER PLOT MATRIX</Option>
+            <Option defaultValue="1" inputType="checkbox" name="showScatterplotMatrix">Scatter plot matrix</Option>
+            <Option defaultValue="0" indent="1" inputType="checkbox" name="diagonalHistogram">Add histograms</Option>
+            <Option defaultValue="0" indent="2" inputType="checkbox" name="diagonalNormal">Add normal density curve</Option>
+            <Option defaultValue="0" indent="2" inputType="checkbox" name="diagonalKernel">Add kernel density estimate</Option>
+            <Option defaultValue="0" indent="1" inputType="checkbox" name="scatterplotMatrixEllipse">Add prediction ellipses</Option>
+            <Option decimalPlaces="0,3" defaultValue="0.95" indent="2"
+                inputType="numbertext"
+                invalidMessage="Enter a number greater than 0 and less than 1. The maximum number of decimal places is three."
+                maxValue="0.999" minValue="0.001"
+                missingMessage="Enter a number greater than 0 and less than 1. The maximum number of decimal places is three."
+                name="scatterplotMatrixProbLevel"
+                promptMessage="Enter a number greater than 0 and less than 1. The maximum number of decimal places is three."
+                rangeMessage="Enter a number greater than 0 and less than 1. The maximum number of decimal places is three." width="100px">Probability level:</Option>
+            <Option inputType="string" name="scatterplotMatrixTitleTemp">Scatter plot matrix grouped by {1}</Option>
+            <Option inputType="string" name="scatterplotMatrixTitle">Scatter plot matrix</Option>
+            <Option inputType="string" name="pairwiseScatterplotGroup">PAIRWISE SCATTER PLOTS</Option>
+            <Option defaultValue="0" inputType="checkbox" name="showPairwiseScatterplot">Pairwise scatter plots</Option>
+            <Option defaultValue="0" indent="1" inputType="checkbox" name="pairwiseScatterplotEllipse">Add a prediction ellipse</Option>
+            <Option decimalPlaces="0,3" defaultValue="0.95" indent="2"
+                inputType="numbertext"
+                invalidMessage="Enter a number greater than 0 and less than 1. The maximum number of decimal places is three."
+                maxValue="0.999" minValue="0.001"
+                missingMessage="Enter a number greater than 0 and less than 1. The maximum number of decimal places is three."
+                name="pairwiseScatterplotProbLevel"
+                promptMessage="Enter a number greater than 0 and less than 1. The maximum number of decimal places is three."
+                rangeMessage="Enter a number greater than 0 and less than 1. The maximum number of decimal places is three." width="100px">Probability level:</Option>
+            <Option inputType="string" name="pairwiseScatterTitleTemp">{1} vs {2}</Option>
+            <Option inputType="string" name="pairwiseScatterGrpTitleTemp">{1} vs {2} grouped by {3}</Option>
+            <Option inputType="string" name="regressionScatterplotGroup">REGRESSION SCATTER PLOTS</Option>
+            <Option defaultValue="0" inputType="checkbox" name="showRegressionScatterplot">Regression scatter plots</Option>
+            <Option indent="1" inputType="select" multiple="true"
+                name="responseVar" sourceLink="continuousVariable">Select response variables</Option>
+            <Option defaultValue="1" indent="1" inputType="checkbox" name="regFitScatter">Add a fitted line</Option>
+            <Option defaultValue="0" indent="1" inputType="checkbox" name="loessFitScatter">Add a loess fit</Option>
+            <Option defaultValue="0" indent="1" inputType="checkbox" name="splineFitScatter">Add a fitted, penalized B-spline curve</Option>
+            <Option inputType="string" name="mosaicPlotGroup">MOSAIC PLOT</Option>
+            <Option defaultValue="0" inputType="checkbox" name="showMosaicPlot">Mosaic plot</Option>
+            <Option defaultValue="0" indent="1" inputType="checkbox" name="sqaureMosaic">Square mosaic plot</Option>
+            <Option defaultValue="rowVarLevel" indent="1"
+                inputType="combobox" name="mosaicTileColor">Specify colors of the mosaic plot tiles:</Option>
+            <Option inputType="string" name="rowVarLevel">Row variable levels</Option>
+            <Option inputType="string" name="pearsonResidu">Pearson residuals</Option>
+            <Option inputType="string" name="stdResidu">Standardized residuals</Option>
+            <Option inputType="string" name="histogramGroup">HISTOGRAM</Option>
+            <Option defaultValue="0" inputType="checkbox" name="showHistogram">Histogram</Option>
+            <Option defaultValue="0" indent="1" inputType="checkbox" name="normalDensityPlot">Add normal density curve</Option>
+            <Option defaultValue="0" indent="1" inputType="checkbox" name="kernelDensityPlot">Add kernel density estimate</Option>
+            <Option defaultValue="0" indent="1" inputType="checkbox" name="histogramInset">Add inset statistics</Option>
+            <Option inputType="string" name="boxPlotGroup">BOX PLOT</Option>
+            <Option defaultValue="0" inputType="checkbox" name="showBoxPlot">Comparative box plot</Option>
+            <Option inputType="string" name="boxPlotNote">Available when classification variable is specified.</Option>
+            <Option inputType="string" name="comboPlotGroup">HISTOGRAM AND BOX PLOT</Option>
+            <Option defaultValue="0" inputType="checkbox" name="showComboPlot">Histogram and box plot</Option>
+            <Option inputType="string" name="comboPlotNote">Available when no classification variable is specified.</Option>
+            <Option defaultValue="0" indent="1" inputType="checkbox" name="comboPlotInset">Add inset statistics</Option>
+            <!--- code comments -->
+            <Option inputType="string" name="scatterPlotMatrixMsg">Scatter plot matrix macro</Option>
+            <Option inputType="string" name="pairwiseScatterPlotMsg">Pairwise scatter plot macro</Option>
+            <Option inputType="string" name="regScatterPlotMsg">Regression scatter plot macro</Option>
+            <Option inputType="string" name="mosaicPlotMsg">Mosaic plot macros</Option>
+            <Option inputType="string" name="histBoxTemplateMsg">Histogram and box plot template</Option>
+            <Option inputType="string" name="histogramMsg">Histogram (one-way or two-way)</Option>
+            <Option inputType="string" name="byGrpHistMsg">By group histogram (one-way or two-way)</Option>
+            <Option inputType="string" name="onewayHistMsg">One-way histogram</Option>
+            <Option inputType="string" name="onewayHistClassMsg">One-way histogram of each class variable</Option>
+            <Option inputType="string" name="twowayHistMsg">Two-way histogram</Option>
+            <Option inputType="string" name="histGetGrpMsg">Get group variable values.</Option>
+            <Option inputType="string" name="histBuildSqlMsg">Build proc sql where clause.</Option>
+            <Option inputType="string" name="histSubsetMsg">Subsetting the data set.</Option>
+            <Option inputType="string" name="histBuildPlotMsg">Build plot group info.</Option>
+            <Option inputType="string" name="histByGrpMsg">Create by group Histogram.</Option>
+            <!--- code title string -->
+            <Option inputType="string" name="distributionOfMsg">Distribution of</Option>
+        </Options>
+    </Metadata>
+    <UI>
+        <Container option="dataTab">
+            <Group open="true" option="dataGroup">
+                <DataItem data="dataset"/>
+            </Group>
+            <Group open="true" option="rolesGroup">
+                <RoleItem role="continuousVariable"/>
+                <RoleItem role="classVariable"/>
+            </Group>
+            <Group open="false" option="addRolesGroup">
+                <RoleItem role="byVariable"/>
+            </Group>
+        </Container>
+        <Container option="plotsTab">
+            <Group open="true" option="plotOptionNoteGroup">
+                <OptionItem option="plotOptionNote"/>
+            </Group>
+            <Group open="true" option="scatterplotMatrixGroup">
+                <OptionItem option="showScatterplotMatrix"/>
+                <OptionItem option="diagonalHistogram"/>
+                <OptionItem option="diagonalNormal"/>
+                <OptionItem option="diagonalKernel"/>
+                <OptionItem option="scatterplotMatrixEllipse"/>
+                <OptionItem option="scatterplotMatrixProbLevel"/>
+            </Group>
+            <Group open="true" option="pairwiseScatterplotGroup">
+                <OptionItem option="showPairwiseScatterplot"/>
+                <OptionItem option="pairwiseScatterplotEllipse"/>
+                <OptionItem option="pairwiseScatterplotProbLevel"/>
+            </Group>
+            <Group open="true" option="regressionScatterplotGroup">
+                <OptionItem option="showRegressionScatterplot"/>
+                <OptionChoice option="responseVar"/>
+                <OptionItem option="regFitScatter"/>
+                <OptionItem option="loessFitScatter"/>
+                <OptionItem option="splineFitScatter"/>
+            </Group>
+            <Group open="true" option="mosaicPlotGroup">
+                <OptionItem option="showMosaicPlot"/>
+                <OptionItem option="sqaureMosaic"/>
+                <OptionChoice option="mosaicTileColor">
+                    <OptionItem option="rowVarLevel"/>
+                    <OptionItem option="pearsonResidu"/>
+                    <OptionItem option="stdResidu"/>
+                </OptionChoice>
+            </Group>
+            <Group open="true" option="histogramGroup">
+                <OptionItem option="showHistogram"/>
+                <OptionItem option="normalDensityPlot"/>
+                <OptionItem option="kernelDensityPlot"/>
+                <OptionItem option="histogramInset"/>
+            </Group>
+            <Group open="true" option="boxPlotGroup">
+                <OptionItem option="boxPlotNote"/>
+                <OptionItem option="showBoxPlot"/>
+            </Group>
+            <Group open="true" option="comboPlotGroup">
+                <OptionItem option="comboPlotNote"/>
+                <OptionItem option="showComboPlot"/>
+                <OptionItem option="comboPlotInset"/>
+            </Group>
+        </Container>
+    </UI>
+    <Dependencies>
+        <Dependency condition="$continuousVariable.size()>=1 || $classVariable.size()>=2">
+            <Target action="hide" conditionResult="true" option="plotOptionNoteGroup"/>
+            <Target action="show" conditionResult="false" option="plotOptionNoteGroup"/>
+        </Dependency>
+        <Dependency condition="$continuousVariable.size()>=2">
+            <Target action="show" conditionResult="true" option="scatterplotMatrixGroup"/>
+            <Target action="hide" conditionResult="false" option="scatterplotMatrixGroup"/>
+        </Dependency>
+        <Dependency condition="$showScatterplotMatrix=='1'">
+            <Target action="show" conditionResult="true" option="diagonalHistogram"/>
+            <Target action="hide" conditionResult="false" option="diagonalHistogram"/>
+            <Target action="show" conditionResult="true" option="diagonalNormal"/>
+            <Target action="hide" conditionResult="false" option="diagonalNormal"/>
+            <Target action="show" conditionResult="true" option="diagonalKernel"/>
+            <Target action="hide" conditionResult="false" option="diagonalKernel"/>
+            <Target action="show" conditionResult="true" option="scatterplotMatrixEllipse"/>
+            <Target action="hide" conditionResult="false" option="scatterplotMatrixEllipse"/>
+            <Target action="show" conditionResult="true" option="scatterplotMatrixProbLevel"/>
+            <Target action="hide" conditionResult="false" option="scatterplotMatrixProbLevel"/>
+        </Dependency>
+        <Dependency condition="$showScatterplotMatrix=='1' &amp;&amp; $diagonalHistogram=='1'">
+            <Target action="show" conditionResult="true" option="diagonalNormal"/>
+            <Target action="hide" conditionResult="false" option="diagonalNormal"/>
+            <Target action="show" conditionResult="true" option="diagonalKernel"/>
+            <Target action="hide" conditionResult="false" option="diagonalKernel"/>
+        </Dependency>
+        <Dependency condition="$showScatterplotMatrix=='1' &amp;&amp; $scatterplotMatrixEllipse=='1'">
+            <Target action="show" conditionResult="true" option="scatterplotMatrixProbLevel"/>
+            <Target action="hide" conditionResult="false" option="scatterplotMatrixProbLevel"/>
+        </Dependency>
+        <Dependency condition="$continuousVariable.size()>=2">
+            <Target action="show" conditionResult="true" option="pairwiseScatterplotGroup"/>
+            <Target action="hide" conditionResult="false" option="pairwiseScatterplotGroup"/>
+        </Dependency>
+        <Dependency condition="$showPairwiseScatterplot=='1'">
+            <Target action="show" conditionResult="true" option="pairwiseScatterplotEllipse"/>
+            <Target action="hide" conditionResult="false" option="pairwiseScatterplotEllipse"/>
+            <Target action="show" conditionResult="true" option="pairwiseScatterplotProbLevel"/>
+            <Target action="hide" conditionResult="false" option="pairwiseScatterplotProbLevel"/>
+        </Dependency>
+        <Dependency condition="$showPairwiseScatterplot=='1' &amp;&amp; $pairwiseScatterplotEllipse=='1'">
+            <Target action="show" conditionResult="true" option="pairwiseScatterplotProbLevel"/>
+            <Target action="hide" conditionResult="false" option="pairwiseScatterplotProbLevel"/>
+        </Dependency>
+        <Dependency condition="$continuousVariable.size()>=2">
+            <Target action="show" conditionResult="true" option="regressionScatterplotGroup"/>
+            <Target action="hide" conditionResult="false" option="regressionScatterplotGroup"/>
+        </Dependency>
+        <Dependency condition="$showRegressionScatterplot=='1'">
+            <Target action="show" conditionResult="true" option="responseVar"/>
+            <Target action="hide" conditionResult="false" option="responseVar"/>
+            <Target action="show" conditionResult="true" option="regFitScatter"/>
+            <Target action="hide" conditionResult="false" option="regFitScatter"/>
+            <Target action="show" conditionResult="true" option="loessFitScatter"/>
+            <Target action="hide" conditionResult="false" option="loessFitScatter"/>
+            <Target action="show" conditionResult="true" option="splineFitScatter"/>
+            <Target action="hide" conditionResult="false" option="splineFitScatter"/>
+        </Dependency>
+        <Dependency condition="$responseVar.size()>=1">
+            <Target action="show" conditionResult="true" option="regFitScatter"/>
+            <Target action="hide" conditionResult="false" option="regFitScatter"/>
+            <Target action="show" conditionResult="true" option="loessFitScatter"/>
+            <Target action="hide" conditionResult="false" option="loessFitScatter"/>
+            <Target action="show" conditionResult="true" option="splineFitScatter"/>
+            <Target action="hide" conditionResult="false" option="splineFitScatter"/>
+        </Dependency>
+        <Dependency condition="$classVariable.size()>=2">
+            <Target action="show" conditionResult="true" option="mosaicPlotGroup"/>
+            <Target action="hide" conditionResult="false" option="mosaicPlotGroup"/>
+        </Dependency>
+        <Dependency condition="$showMosaicPlot=='1'">
+            <Target action="show" conditionResult="true" option="sqaureMosaic"/>
+            <Target action="hide" conditionResult="false" option="sqaureMosaic"/>
+            <Target action="show" conditionResult="true" option="mosaicTileColor"/>
+            <Target action="hide" conditionResult="false" option="mosaicTileColor"/>
+        </Dependency>
+        <Dependency condition="$classVariable.size()>0 &amp;&amp; $continuousVariable.size()>0">
+            <Target action="show" conditionResult="true" option="histogramGroup"/>
+            <Target action="hide" conditionResult="false" option="histogramGroup"/>
+        </Dependency>
+        <Dependency condition="$showHistogram=='1'">
+            <Target action="show" conditionResult="true" option="normalDensityPlot"/>
+            <Target action="hide" conditionResult="false" option="normalDensityPlot"/>
+            <Target action="show" conditionResult="true" option="kernelDensityPlot"/>
+            <Target action="hide" conditionResult="false" option="kernelDensityPlot"/>
+            <Target action="show" conditionResult="true" option="histogramInset"/>
+            <Target action="hide" conditionResult="false" option="histogramInset"/>
+        </Dependency>
+        <Dependency condition="$classVariable.size()>0 &amp;&amp; $continuousVariable.size()>0">
+            <Target action="show" conditionResult="true" option="boxPlotGroup"/>
+            <Target action="hide" conditionResult="false" option="boxPlotGroup"/>
+        </Dependency>
+        <Dependency condition="$classVariable.size()==0 &amp;&amp; $continuousVariable.size()>0">
+            <Target action="show" conditionResult="true" option="comboPlotGroup"/>
+            <Target action="hide" conditionResult="false" option="comboPlotGroup"/>
+        </Dependency>
+        <Dependency condition="$showComboPlot=='1'">
+            <Target action="show" conditionResult="true" option="comboPlotInset"/>
+            <Target action="hide" conditionResult="false" option="comboPlotInset"/>
+        </Dependency>
+    </Dependencies>
+    <Requirements>
+        <Requirement condition="(!(($continuousVariable.size()==0 &amp;&amp; $classVariable.size()==0) || ($continuousVariable.size()==0 &amp;&amp; $classVariable.size()==1)))">
+            <Message nlsKey="varSelectionValMsgKey">Select at least one continuous variable or two classification variables if no continuous variable is selected.</Message>
+        </Requirement>
+        <Requirement condition="(!(($continuousVariable.size()>=1 || $classVariable.size()>=2) &amp;&amp; !($showScatterplotMatrix=='1' || $showPairwiseScatterplot=='1' || $showRegressionScatterplot=='1' || $showMosaicPlot=='1' || $showComboPlot=='1' || $showHistogram=='1' || $showBoxPlot=='1')))">
+            <Message nlsKey="plotSelectionValMsgKey">Click to select at least one plot.</Message>
+        </Requirement>
+        <Requirement condition="(!($continuousVariable.size()>=2 &amp;&amp; !($showScatterplotMatrix=='1' || $showPairwiseScatterplot=='1' || $showMosaicPlot=='1' || $showComboPlot=='1' || $showHistogram=='1' || $showBoxPlot=='1') &amp;&amp; !($showRegressionScatterplot=='0' || $responseVar.size()>0)))">
+            <Message nlsKey="responseSelectionValMsgKey">Select at least one response variable.</Message>
+        </Requirement>
+    </Requirements>
+    <CodeTemplate><![CDATA[
+options validvarname=any;        
+#if($showScatterplotMatrix=="1" || $showPairwiseScatterplot=="1" || ($showRegressionScatterplot=="1" && $responseVar.size()>0) || $showMosaicPlot=="1" || $showComboPlot=="1" || $showHistogram=="1" || $showBoxPlot=="1")
+ods noproctitle;
+#end
+#if($showScatterplotMatrix=="1" || $showPairwiseScatterplot=="1" || ($showRegressionScatterplot=="1" && $responseVar.size()>0) || $showComboPlot=="1" || $showHistogram=="1" || $showBoxPlot=="1")
+ods graphics / imagemap=on;
+#end
+#if($showScatterplotMatrix=="1" || $showPairwiseScatterplot=="1" || $showRegressionScatterplot=="1" || $showMosaicPlot=="1" || $showComboPlot=="1" || $showHistogram=="1")
+#if($continuousVariable.size()>=1 || $classVariable.size()>=1)
+#if($byVariable.size()>0)
+proc sort data=$dataset out=WORK.TempSorted5215;
+    by #foreach($item in $byVariable) $item #end;
+run;
+#end
+#end
+#end
+
+######## Scatter plot matrix macro ########
+#if($showScatterplotMatrix=="1")
+/* $scatterPlotMatrixMsg */
+%macro scatterPlotMatrix(xVars=, title=, groupVar=);
+## Scatterplot matrix is used to explore relationships among numerical variables ##
+#if($byVariable.size()>0)
+    proc sgscatter data=WORK.TempSorted5215;
+#else
+    proc sgscatter data=$dataset;
+#end
+    matrix &xVars / 
+    %if(&groupVar ne %str()) %then %do;
+        group=&groupVar legend=(sortorder=ascending)
+    %end;
+    #if($diagonalHistogram=="1" || $diagonalKernel=="1" || $diagonalNormal=="1")
+        diagonal=(#if($diagonalHistogram=="1") histogram #end #if($diagonalKernel=="1") kernel #end #if($diagonalNormal=="1") normal #end)
+    #end
+    #if($scatterplotMatrixEllipse=="1")
+        ellipse=(type=predicted #if($scatterplotMatrixProbLevel && $scatterplotMatrixProbLevel!="") alpha=$MathTool.div($MathTool.sub(1000,$MathTool.mul(1000, $MathTool.toDouble($scatterplotMatrixProbLevel))),1000) #end)
+    #end;
+    title &title;
+    #if($byVariable.size() > 0)
+        by #foreach($item in $byVariable) $item #end;
+    #end
+run;
+title;
+%mend scatterPlotMatrix;
+#end
+######## Scatter plot matrix macro ########
+
+######## Pairwise scatter plot macro ########
+#if($showPairwiseScatterplot=="1")
+/* $pairwiseScatterPlotMsg */
+%macro pairwiseScatterplot(xVar=, yVar=, title=, groupVar=);
+#if($byVariable.size()>0)
+    proc sgscatter data=WORK.TempSorted5215;
+#else
+    proc sgscatter data=$dataset;
+#end
+    plot (&yVar)*(&xVar) / 
+%if(&groupVar ne %str()) %then %do;
+    group=&groupVar legend=(sortorder=ascending)
+%end;
+#if($pairwiseScatterplotEllipse=="1")
+    ellipse=(type=predicted #if($pairwiseScatterplotProbLevel && $pairwiseScatterplotProbLevel!="") alpha=$MathTool.div($MathTool.sub(1000,$MathTool.mul(1000, $MathTool.toDouble($pairwiseScatterplotProbLevel))),1000) #end)
+#end;
+title &title;
+#if($byVariable.size() > 0)
+    by #foreach($item in $byVariable) $item #end;
+#end
+run;
+title;
+%mend pairwiseScatterplot;
+#end
+######## Pairwise scatter plot macro ########
+
+######## Regression scatter plot macro ########
+#if($showRegressionScatterplot=="1" && $responseVar.size()>0)
+/* $regScatterPlotMsg */
+%macro regressionScatterplot(xVar=, yVar=, title=, groupVar=);
+#if($byVariable.size()>0)
+    proc sgscatter data=WORK.TempSorted5215;
+#else
+    proc sgscatter data=$dataset;
+#end
+    plot (&yVar)*(&xVar) / 
+%if(&groupVar ne %str()) %then %do;
+    group=&groupVar legend=(sortorder=ascending)
+%end;
+#if($regFitScatter=="1") reg #end #if($loessFitScatter=="1") loess=(lineattrs=(pattern=ShortDash)) #end #if($splineFitScatter=="1") pbspline=(lineattrs=(pattern=MediumDash)) #end;
+title &title;
+#if($byVariable.size() > 0)
+    by #foreach($item in $byVariable) $item #end;
+#end
+run;
+title;
+%mend regressionScatterplot;
+#end
+######## Regression scatter plot macro ########
+
+######## Mosaic plot macros ########
+#if($showMosaicPlot=="1" && $classVariable.size()>2)
+/* $mosaicPlotMsg */
+%macro byGroupMosaic(rowVar=, colVar=);
+ods graphics / imagemap=off;
+#if($byVariable.size()>0)
+proc freq data=WORK.TempSorted5215;
+#else
+proc freq data=$dataset;
+#end
+    ods select MosaicPlot;
+    tables (&rowVar)*(&colVar) / plots=mosaicplot( 
+    #if($mosaicTileColor=="pearsonResidu")
+        colorstat=pearsonres
+    #elseif($mosaicTileColor=="stdResidu")
+        colorstat=stdres
+    #end
+    #if($sqaureMosaic=="1") square #end
+    );
+    #if($byVariable.size() > 0)
+        by #foreach($item in $byVariable) $item #end;
+    #end
+run;
+ods graphics / imagemap=on;
+%mend byGroupMosaic;
+#end
+
+#if($showMosaicPlot=="1" && $classVariable.size()>2)
+%macro mosaicPlot(numClassVars=, classVarList=);
+%local i j colVar rowVar;
+## Mosaic plot for class variables ##
+%if(&numClassVars>=2) %then %do;
+    %do i=1 %to %eval(&numClassVars-1);
+        %do j=%eval(&i+1) %to %eval(&numClassVars);
+            %let colVar=%scan(%str(&classVarList), &i, %str( ));
+            %let rowVar=%scan(%str(&classVarList), &j, %str( ));
+            %byGroupMosaic(rowVar=&rowVar, colVar=&colVar);
+        %end;
+    %end;
+%end;
+%mend mosaicPlot;
+#end
+######## Mosaic plot macro ########
+
+######## Histogram and Box plot template ########
+#if($showComboPlot=="1")
+## GTL to construct combination histogram/boxplot ##
+/* $histBoxTemplateMsg */
+proc template;
+    define statgraph histobox;
+        dynamic AVAR;
+        begingraph;
+            entrytitle "$distributionOfMsg " eval(catq('q',colname(AVAR)));
+            layout lattice / rows=2 columndatarange=union
+                rowgutter=0 rowweights=(0.75 0.25);
+                layout overlay / yaxisopts=(offsetmax=0.1) xaxisopts=(display=none);
+                    layout gridded / columns=2 border=on autoalign=(topright topleft);
+                        #if($comboPlotInset=="1")
+                        %let _lft = halign=left;
+                        %let _rgt = halign=right;
+                        entry &_lft "Mean"; entry &_rgt eval(strip(put(mean(AVAR), best.)));
+                        entry &_lft "Std Dev"; entry &_rgt eval(strip(put(stddev(AVAR), best.)));
+                        entry &_lft "N"; entry &_rgt eval(strip(put(n(AVAR), best.)));
+                        #end
+                    endlayout;
+                    histogram AVAR /;
+                endlayout;
+                layout overlay /;
+                    BoxPlot Y=AVAR / orient=horizontal;
+                endlayout;
+            endlayout;
+        endgraph;
+    end;
+run;
+#end
+######## Histogram and Box plot macro ########
+
+######## Histogram macros ########
+#if($showHistogram=="1")
+/* $histogramMsg */
+%macro DEHisto(data=, avar=, classVar=);
+%local i numAVars numCVars cVar cVar1 cVar2;
+%let numAVars=%Sysfunc(countw(%str(&avar), %str( ), %str(q)));
+%let numCVars=%Sysfunc(countw(%str(&classVar), %str( ), %str(q)));
+%if(&numAVars>0 & &numCVars>0) %then %do;
+    %if(&numCVars=1) %then %do; ## one class variable ##
+        %let cVar=%scan(%str(&classVar), 1, %str( ), %str(q));
+        proc sql noprint;
+            select count(distinct &cVar) into :nrows from &data;
+        quit;
+        /* $onewayHistMsg */
+        ## One-way histogram ##
+        proc univariate data=&data noprint;
+            var &avar;
+            class &cVar;
+            histogram &avar / nrows=&nrows
+            #if($normalDensityPlot == "1") normal(noprint)#end
+            #if($kernelDensityPlot == "1") kernel#end
+            ;
+            #if($histogramInset == "1") inset mean std n / position=ne; #end
+        run;
+    %end;
+    %else %do; ## two class variables ##
+        /* $onewayHistClassMsg */
+        ## One-way histogram of each class variable ##
+        %do i=1 %to %eval(&numCVars);
+            %let cVar=%scan(%str(&classVar), &i, %str( ), %str(q));
+            proc sql noprint;
+                select count(distinct &cVar) into :nrows from &data;
+            quit;
+            proc univariate data=&data noprint;
+                var &avar;
+                class &cVar;
+                histogram &avar / nrows=&nrows
+                #if($normalDensityPlot == "1") normal(noprint)#end
+                #if($kernelDensityPlot == "1") kernel#end
+                ;
+                #if($histogramInset == "1") inset mean std n / position=ne; #end
+            run;            
+        %end;
+        /* $twowayHistMsg */
+        ## Two-way histogram ##
+        %let cVar1=%scan(%str(&classVar), 1, %str( ), %str(q));
+        %let cVar2=%scan(%str(&classVar), 2, %str( ), %str(q));
+        proc sql noprint;
+            select count(distinct &cVar1) into :nrows from &data;
+        quit;
+        proc sql noprint;
+            select count(distinct &cVar2) into :ncols from &data;
+        quit;
+        proc univariate data=&data noprint;
+            var &avar;
+            class &cVar1 &cVar2;
+            histogram &avar / nrows=&nrows ncols=&ncols
+            #if($normalDensityPlot == "1") normal(noprint)#end
+            #if($kernelDensityPlot == "1") kernel#end
+            ;
+            #if($histogramInset == "1") inset mean std n / position=ne; #end
+        run;    
+    %end;
+%end;
+%mend DEHisto;
+
+#if($byVariable.size()>0)
+/* $byGrpHistMsg */
+%macro byGroupDEHisto(data=, level=, num_level=, byVars=, num_byvars=, avar=, classVar=);
+%local i j dsid whereClause varnum rc groupInfo;
+%do j=1 %to &num_byvars;
+    %let varName&j=%scan(%str(&byVars), &j);
+%end;
+
+%do i=1 %to &num_level;
+    /* $histGetGrpMsg */
+    ## Get group variable values. ##
+    data _null_;
+        i=&i;
+        set &level point=i; 
+        %do j=1 %to &num_byvars;
+            call symputx("x&j",strip(&&varName&j),'l');
+        %end;
+        stop;                                                         
+    run;
+    /* $histBuildSqlMsg */
+    ## Build proc sql where clause. ##
+    %let dsid=%sysfunc(open(&data));
+    %let whereClause=;
+    %do j=1 %to %eval(&num_byvars-1);
+        %let varnum=%sysfunc(varnum(&dsid,&&varName&j));
+        %if(%sysfunc(vartype(&dsid, &varnum))=C) %then
+            %let whereClause=&whereClause.&&varName&j.="&&x&j"%str( and );
+        %else
+            %let whereClause=&whereClause.&&varName&j.=&&x&j.%str( and );
+    %end;
+    %let varnum=%sysfunc(varnum(&dsid,&&varName&num_byvars));
+    %if(%sysfunc(vartype(&dsid, &varnum))=C) %then
+        %let whereClause=&whereClause.&&varName&num_byvars.="&&x&num_byvars";
+    %else
+        %let whereClause=&whereClause.&&varName&num_byvars.=&&x&num_byvars;
+    %let rc=%sysfunc(close(&dsid));
+    /* $histSubsetMsg */
+    ## Subsetting the data set. ##
+    proc sql noprint;
+        create table WORK.tempData as
+        select *
+        from &data
+        where &whereClause
+        ;
+    quit;
+    /* $histBuildPlotMsg */
+    ## Build plot group info. ##
+    %let groupInfo=;
+    %do j=1 %to %eval(&num_byvars-1);
+        %let groupInfo=&groupInfo.&&varName&j.=&&x&j%str( );
+    %end;
+    %let groupInfo=&groupInfo.&&varName&num_byvars.=&&x&num_byvars;
+    /* $histByGrpMsg */
+    ## Create by group Histogram. ##
+    title (&groupInfo);
+    %DEHisto(data=WORK.tempData, avar=&avar, classVar=&classVar);
+    title;
+%end;
+%mend byGroupDEHisto;
+#end ##end if($byVariable.size()>0)
+#end
+######## Histogram macros ########
+
+######## Scatter plot matrix ########
+#if($showScatterplotMatrix=="1")
+#set($contVarList="") #foreach($item in $continuousVariable) #if($foreach.hasNext) #set($contVarList="$contVarList$item ") #else #set($contVarList="$contVarList$item") #end #end
+#if($classVariable.size()>0)
+    #foreach($item in $classVariable) 
+        #set($spMatrixTitle=$scatterplotMatrixTitleTemp.replace("{1}", "$item.get('value')"))
+        %scatterPlotMatrix(xVars=$contVarList, title=$CTMUtil.doubleQuoteString($spMatrixTitle), groupVar=$item); 
+    #end
+#else
+    %scatterPlotMatrix(xVars=$contVarList, title=$CTMUtil.doubleQuoteString($scatterplotMatrixTitle), groupVar=);
+#end
+#end
+######## Scatter plot matrix ########
+
+######## Pairwise scatter plot ########
+#if($showPairwiseScatterplot=="1")
+#set($pairScatterTitle='')
+#foreach($yVar in $continuousVariable)
+    #foreach($xVar in $continuousVariable)
+        #if($yVar!=$xVar)
+            #if($classVariable.size()>0)
+                #foreach($groupVar in $classVariable)
+                    #set($pairScatterTitle=$pairwiseScatterGrpTitleTemp.replace("{1}", "$yVar.get('value')").replace("{2}","$xVar.get('value')").replace("{3}","$groupVar.get('value')"))
+                    %pairwiseScatterplot(xVar=$xVar, yVar=$yVar, title=$CTMUtil.doubleQuoteString($pairScatterTitle), groupVar=$groupVar);
+                #end
+            #else
+                #set($pairScatterTitle=$pairwiseScatterTitleTemp.replace("{1}", "$yVar.get('value')").replace("{2}","$xVar.get('value')"))
+                %pairwiseScatterplot(xVar=$xVar, yVar=$yVar, title=$CTMUtil.doubleQuoteString($pairScatterTitle));
+            #end
+        #end
+    #end        
+#end
+#end
+######## Pairwise scatter plot ########
+
+######## Regression scatter plot ########
+#if($showRegressionScatterplot=="1" && $responseVar.size()>0)
+#set($regScatterTitle='')
+#foreach($yVar in $responseVar)
+    #foreach($xVar in $continuousVariable)
+        #if($yVar.toString()!=$xVar.toString())
+            #if($classVariable.size()>0)
+                #foreach($groupVar in $classVariable)
+                    #set($regScatterTitle=$pairwiseScatterGrpTitleTemp.replace("{1}", "$yVar.get('value')").replace("{2}","$xVar.get('value')").replace("{3}","$groupVar.get('value')"))
+                    %regressionScatterplot(xVar=$xVar, yVar=$yVar, title=$CTMUtil.doubleQuoteString($regScatterTitle), groupVar=$groupVar);
+                #end
+            #else
+                #set($regScatterTitle=$pairwiseScatterTitleTemp.replace("{1}", "$yVar.get('value')").replace("{2}","$xVar.get('value')"))
+                %regressionScatterplot(xVar=$xVar, yVar=$yVar, title=$CTMUtil.doubleQuoteString($regScatterTitle));
+            #end
+        #end
+    #end        
+#end
+#end
+######## Regression scatter plot ########
+
+######## Mosaic plot ########
+#if($showMosaicPlot=="1")
+#if($classVariable.size()>2) 
+    #set($classVarList="") #foreach($item in $classVariable) #if($foreach.hasNext) #set($classVarList="$classVarList$item ") #else #set($classVarList="$classVarList$item") #end #end
+%mosaicPlot(numClassVars=$classVariable.size(), classVarList=$classVarList);
+#elseif($classVariable.size()==2) 
+ods graphics / imagemap=off;
+proc freq data=$dataset;
+   ods select MosaicPlot;
+   tables $classVariable.get(0)*$classVariable.get(1)
+ / plots=mosaicplot#if($mosaicTileColor=="pearsonResidu" || $mosaicTileColor=="stdResidu" || $sqaureMosaic=="1")
+(
+    #if($mosaicTileColor=="pearsonResidu")
+        colorstat=pearsonres
+    #elseif($mosaicTileColor=="stdResidu")
+        colorstat=stdres
+    #end
+    #if($sqaureMosaic=="1") square #end
+    )
+#end
+;
+run;
+ods graphics / imagemap=on;
+#end
+#end  ##end if($showMosaicPlot=="1")
+######## Mosaic plot ########
+
+######## Histogram ########
+#if($showHistogram == "1")
+#if($continuousVariable.size()>0 && $classVariable.size()>0)
+#set($avar="") #foreach($item in $continuousVariable) #if($foreach.hasNext) #set($avar="$avar$item ") #else #set($avar="$avar$item") #end #end
+#set($classVar="") #foreach($item in $classVariable) #if($foreach.hasNext) #set($classVar="$classVar$item ") #else #set($classVar="$classVar$item") #end #end
+#if($byVariable.size() > 0) 
+#set($byVars="") #foreach($item in $byVariable) #if($foreach.hasNext) #set($byVars="$byVars$item ") #else #set($byVars="$byVars$item") #end #end
+#foreach($item in $byVariable) #if(!$foreach.hasNext) #set($lastByVar=$item) #end #end
+#set($num_byvars=$byVariable.size())
+%let num_level=0;
+data WORK.level(keep=$byVars unique_level);
+    set WORK.TempSorted5215 end=lastobs;
+    retain unique_level 0;
+    by $byVars;
+    if last.$lastByVar then do;
+        unique_level+1;
+        output;
+    end;
+    if lastobs then call symputx('num_level', strip(put(unique_level, best.)),'l');    
+run;
+%byGroupDEHisto(data=WORK.TempSorted5215, level=WORK.level, num_level=&num_level, byVars=$byVars, num_byvars=$num_byvars, avar=$avar, classVar=$classVar);
+#else  ##no by groups
+    %DEHisto(data=$dataset, avar=$avar, classVar=$classVar);
+#end  ##end if($byVariable.size() > 0)
+#end
+#end
+######## Histogram ########
+
+######## One-way boxplot ########
+#if($showBoxPlot=="1")
+#if($classVariable.size()>0 && $continuousVariable.size()>0)
+#foreach($item1 in $classVariable)
+#if($byVariable.size() > 0)
+proc sort data=$dataset out=WORK.TempSorted4877;
+    by #foreach($item in $byVariable) $item #end $item1;
+run;
+proc boxplot data=WORK.TempSorted4877;
+#else
+proc sort data=$dataset out=WORK.TempSorted4877;
+    by $item1;
+run;
+proc boxplot data=WORK.TempSorted4877;
+#end  ##end sorting and proc boxplot
+    plot (#foreach($item in $continuousVariable) $item #end)*$item1 / boxstyle=schematic;
+#if($byVariable.size() > 0) by #foreach($item in $byVariable) $item #end; #end  
+run;
+#end ##end foreach($item1 in $classVariable) //avaiable only when class variable is specified
+#end
+#end
+######## One-way boxplot ########
+
+######## Histogram and Box plot ########
+#if($showComboPlot=="1")
+#if($continuousVariable.size()>0 && $classVariable.size()==0)
+#foreach($item in $continuousVariable) 
+#if($byVariable.size() > 0) 
+proc sgrender data=WORK.TempSorted5215 template=histobox;
+    dynamic AVAR=$CTMUtil.quoteString($item.get('value'));
+    by #foreach($item in $byVariable) $item #end;
+run;
+#else
+proc sgrender data=$dataset template=histobox;
+    dynamic AVAR=$CTMUtil.quoteString($item.get('value'));
+run;    
+#end  ##end byVar block
+#end
+#end
+#end
+######## Histogram and Box plot ########
+
+######## Clean up ########
+#if(($showScatterplotMatrix=="1" || $showPairwiseScatterplot=="1" || $showRegressionScatterplot=="1" || $showMosaicPlot=="1" || $showComboPlot=="1" || $showHistogram=="1")
+    || ($showBoxPlot=="1" && ($classVariable.size()>0 && $continuousVariable.size()>0)))
+#if($byVariable.size()>0)
+proc datasets library=WORK noprint;
+    delete #if($showScatterplotMatrix=="1" || $showPairwiseScatterplot=="1" || $showRegressionScatterplot=="1" || $showMosaicPlot=="1" || $showComboPlot=="1" || $showHistogram=="1") 
+        TempSorted5215 #if($showHistogram=="1") level tempData #end #end 
+    #if($showBoxPlot=="1" && ($classVariable.size()>0 && $continuousVariable.size()>0)) TempSorted4877 #end;
+run;
+#else
+#if($showBoxPlot=="1" && ($classVariable.size()>0 && $continuousVariable.size()>0))
+proc datasets library=WORK noprint;
+    delete TempSorted4877;
+run;
+#end
+#end
+#end
+######## Clean up ########
+]]></CodeTemplate>
+    <TemplateValues version="3.8"><![CDATA[
+{"addRolesGroup":"ADDITIONAL ROLES","sqaureMosaic":"0","distributionOfMsg":"Distribution of","sasOS":"Linux LIN X64 3.10.0-1062.9.1.el7.x86_64","pairwiseScatterPlotMsg":"Pairwise scatter plot macro","dataTab":"DATA","mosaicPlotGroup":"MOSAIC PLOT","histBoxTemplateMsg":"Histogram and box plot template","showRegressionScatterplot":"0","onewayHistMsg":"One-way histogram","histSubsetMsg":"Subsetting the data set.","plotsTab":"PLOTS","regressionScatterplotGroup":"REGRESSION SCATTER PLOTS","byVariable":"","splineFitScatter":"0","diagonalNormal":"0","histByGrpMsg":"Create by group Histogram.","onewayHistClassMsg":"One-way histogram of each class variable","comboPlotInset":"0","histogramMsg":"Histogram (one-way or two-way)","histGetGrpMsg":"Get group variable values.","diagonalHistogram":"0","boxPlotNote":"Available when classification variable is specified.","responseVar":"","showScatterplotMatrix":"1","histogramGroup":"HISTOGRAM","histBuildPlotMsg":"Build plot group info.","scatterplotMatrixProbLevel":"0.95","kernelDensityPlot":"0","twowayHistMsg":"Two-way histogram","classVariable":"json:[{\"value\":\"Category\",\"type\":\"Char\",\"length\":15,\"format\":\"$15.\",\"informat\":\"$15.\",\"className\":\"RoleObject\"},{\"value\":\"Segment\",\"type\":\"Char\",\"length\":11,\"format\":\"$11.\",\"informat\":\"$11.\",\"className\":\"RoleObject\"}]","boxPlotGroup":"BOX PLOT","pairwiseScatterplotProbLevel":"0.95","mosaicTileColor":"rowVarLevel","rowVarLevel":"Row variable levels","rolesGroup":"ROLES","comboPlotGroup":"HISTOGRAM AND BOX PLOT","pairwiseScatterplotGroup":"PAIRWISE SCATTER PLOTS","histBuildSqlMsg":"Build proc sql where clause.","plotOptionNoteGroup":"NOTE","scatterPlotMatrixMsg":"Scatter plot matrix macro","continuousVariable":"json:[{\"value\":\"Sales\",\"type\":\"Numeric\",\"length\":8,\"format\":\"BEST12.\",\"informat\":\"BEST32.\",\"className\":\"RoleObject\"},{\"value\":\"Quantity\",\"type\":\"Numeric\",\"length\":8,\"format\":\"BEST12.\",\"informat\":\"BEST32.\",\"className\":\"RoleObject\"},{\"value\":\"Discount\",\"type\":\"Numeric\",\"length\":8,\"format\":\"BEST12.\",\"informat\":\"BEST32.\",\"className\":\"RoleObject\"},{\"value\":\"Profit\",\"type\":\"Numeric\",\"length\":8,\"format\":\"BEST12.\",\"informat\":\"BEST32.\",\"className\":\"RoleObject\"},{\"value\":\"Shipping Cost\",\"type\":\"Numeric\",\"length\":8,\"format\":\"BEST12.\",\"informat\":\"BEST32.\",\"className\":\"RoleObject\"}]","mosaicPlotMsg":"Mosaic plot macros","pearsonResidu":"Pearson residuals","scatterplotMatrixTitle":"Scatter plot matrix","showPairwiseScatterplot":"0","regFitScatter":"1","pairwiseScatterGrpTitleTemp":"{1} vs {2} grouped by {3}","loessFitScatter":"0","plotOptionNote":"Plots are available when you specify at least one continuous variable or two classification variables if no continuous variable is selected.","regScatterPlotMsg":"Regression scatter plot macro","normalDensityPlot":"0","comboPlotNote":"Available when no classification variable is specified.","dataGroup":"DATA","sasVersion":"9.46","diagonalKernel":"0","scatterplotMatrixGroup":"SCATTER PLOT MATRIX","scatterplotMatrixTitleTemp":"Scatter plot matrix grouped by {1}","pairwiseScatterTitleTemp":"{1} vs {2}","showMosaicPlot":"0","showComboPlot":"0","histogramInset":"0","scatterplotMatrixEllipse":"0","stdResidu":"Standardized residuals","byGrpHistMsg":"By group histogram (one-way or two-way)","dataset":{"librarytable":"MIS581.IMPORT"},"showHistogram":"0","pairwiseScatterplotEllipse":"0","showBoxPlot":"0"}
+]]></TemplateValues>
+</Task>
